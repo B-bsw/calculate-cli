@@ -6,10 +6,10 @@ print("\033[H\033[J", end="")
 OP = Literal["+", "-", "*", "/"]
 isVerify = True
 
-OPERATOR: OP | None = None
-A: int | None = None
-B: int | None = None
-C: float
+OPERATOR:   OP  | None = None
+A:          int | None = None
+B:          int | None = None
+C:          float
 
 VALID_OPS: set[OP] = {"+", "-", "*", "/"}
 
@@ -29,7 +29,7 @@ def calculate(oper,A,B):
             return 0
 
 while isVerify:
-    print("WELCOME TO CALCULATOR\n\n")
+    print("WELCOME TO CALCULATOR\n")
 
     if A is not None and B is not None and OPERATOR is not None:
         print(f"{A} {OPERATOR} {B} = {C}")
@@ -50,7 +50,7 @@ while isVerify:
     if raw in VALID_OPS:
         OPERATOR = cast(OP, raw)
     else:
-        print("Invalid operator")
+        # print("Invalid operator")
         OPERATOR = None
 
     C = calculate(OPERATOR,A,B)
