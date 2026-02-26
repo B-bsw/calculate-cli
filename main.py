@@ -6,14 +6,22 @@ print("\033[H\033[J", end="")
 OP = Literal["+", "-", "*", "/"]
 isVerify = True
 
-OPERATOR:   OP  | None = None
-A:          int | None = None
-B:          int | None = None
-C:          float
+OPERATOR: OP | None = None
+A: int | None = None
+B: int | None = None
+C: float
 
 VALID_OPS: set[OP] = {"+", "-", "*", "/"}
 
-def calculate(oper,A,B):
+# COLORS
+RED     = "\033[91m"
+GREEN   = "\033[92m"
+YELLOW  = "\033[93m"
+CYAN    = "\033[96m"
+RESET   = "\033[0m"
+
+
+def calculate(oper, A, B):
     match oper:
         case "*":
             return A * B
@@ -28,47 +36,54 @@ def calculate(oper,A,B):
         case _:
             return 0
 
-while isVerify:
-    print("WELCOME TO CALCULATOR\n")
 
-    if A is not None and B is not None and OPERATOR is not None:
-        print(f"{A} {OPERATOR} {B} = {C}")
-    else:
-        print("A OPERATOR B")
+while isVerify:
+    print(f"{CYAN}WELCOME TO CALCULATOR\n{RESET}")
+    print(f"{GREEN}Example: 2+2\n{RESET}")
 
     try:
-        A = int(input("ENTER A : ")) | 0
-        B = int(input("ENTER B : ")) | 0
+        expr = input("INPUT: ").replace(" ", "")
 
-        raw = input("ENTER OPERATOR(+, -, *, /): ") | None
+        found_op = None
+        for op in VALID_OPS:
+            if op in expr:
+                found_op = op
+                break
+
+        if found_op is None:
+            raise ValueError("Invalid operator")
+
+        left, right = expr.split(found_op)
+
+        A = int(left)
+        B = int(right)
+        raw = found_op
+
+    except KeyboardInterrupt:
+        break
     except:
         A = None
         B = None
         raw = None
-        print("\n----- INPUT IS ERROR! -----\n")
+        print(f"\n{RED}----- INPUT IS ERROR! -----{RESET}\n")
+        print("\033[H\033[J", end="")
+        continue
 
     if raw in VALID_OPS:
         OPERATOR = cast(OP, raw)
     else:
-        # print("Invalid operator")
         OPERATOR = None
 
-    C = calculate(OPERATOR,A,B)
-    
-    while True:
-            choice = questionary.select(
-                "AGAIN?",
-                choices=[
-                    "Yes",
-                    "No"
-                ]
-            ).ask()
+    C = calculate(OPERATOR, A, B)
 
-            if choice == "No":
-                isVerify = False
-                break
-            else:
-                break
-            
+    print(f"\nOUTPUT: {C}\n")
+
+    choice = questionary.select(
+        "AGAIN?",
+        choices=["Yes", "No"]
+    ).ask()
+
+    if choice == "No":
+        isVerify = False
 
     print("\033[H\033[J", end="")
