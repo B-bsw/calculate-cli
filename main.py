@@ -1,4 +1,5 @@
 from typing import Literal, cast
+
 import questionary
 
 print("\033[H\033[J", end="")
@@ -14,11 +15,11 @@ C: float
 VALID_OPS: set[OP] = {"+", "-", "*", "/"}
 
 # COLORS
-RED     = "\033[91m"
-GREEN   = "\033[92m"
-YELLOW  = "\033[93m"
-CYAN    = "\033[96m"
-RESET   = "\033[0m"
+RED = "\033[91m"
+GREEN = "\033[92m"
+YELLOW = "\033[93m"
+CYAN = "\033[96m"
+RESET = "\033[0m"
 
 
 def calculate(oper, A, B):
@@ -78,10 +79,7 @@ while isVerify:
 
     print(f"\nOUTPUT: {C}\n")
 
-    choice = questionary.select(
-        "AGAIN?",
-        choices=["Yes", "No"]
-    ).ask()
+    choice = questionary.select("AGAIN?", choices=["Yes", "No"]).ask()
 
     if choice == "No":
         isVerify = False
